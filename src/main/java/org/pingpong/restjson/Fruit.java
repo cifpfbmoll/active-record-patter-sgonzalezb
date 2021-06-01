@@ -1,18 +1,25 @@
 package org.pingpong.restjson;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"name", "decription"})
-public class Fruit {
+import io.quarkus.hibernate.orm.panache.PanacheEntity;//Importado con el comando de mvnw add-extension 
 
-    // los propiedades han de ser publicas para que jackson
-    // pueda acceder a ellar por reflection
+@Entity
+@JsonPropertyOrder({"name", "decription"})
+public class Fruit extends PanacheEntity{
+
     @NotBlank
-    private String name;
+    @Column(unique=true)
+    public String name;
+
     @NotEmpty
+    @Column
     public String description;
 
     public Fruit() {
@@ -23,11 +30,14 @@ public class Fruit {
         this.description = description;
     }
 
+    //devuelve los nombres con uppercase
     public String getName() {
-        return this.name;
+        return name.toUpperCase();
     }
+
+    //guarda los nombres en la base de datos en minúscula
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     /*
