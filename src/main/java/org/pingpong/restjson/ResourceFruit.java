@@ -22,7 +22,7 @@ public class ResourceFruit {
     ServiceFruit service;
     
     public ResourceFruit() {
-        // CDI
+        
     }
 
     /**
@@ -36,6 +36,7 @@ public class ResourceFruit {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
+    @Path("/hi")
     // curl -w "\n" http://localhost:8080/fruits/ 
     // -H "Content-Type: application/x-www-form-urlencoded"
     public String hello() {

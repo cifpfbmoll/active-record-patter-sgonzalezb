@@ -40,7 +40,7 @@ public class FruitResourceTest {
         // responde el endpoint hello
         given()
             .contentType(ContentType.TEXT)
-            .when().get("/fruits")
+            .when().get("/fruits/hi")
             .then()
                 .statusCode(200)
                 .body(is("Colmados Farmer Rick"));
