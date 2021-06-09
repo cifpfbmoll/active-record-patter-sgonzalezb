@@ -54,6 +54,24 @@ public class ResourceFruit {
         return service.list();
     }
 
+
+    
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/farmers")
+    // no es necesario Produces ya que por defecto
+    // resteasy jackson desactiva la negociación
+    // y sirve MediaType.APPLICATION_JSON
+    // curl -w "\n" http://localhost:8080/fruits/ -H "Content-Type: application/json"
+    public Set<Farmer>listfarmer() {
+        return service.listfarmer();
+    }
+
+
+
+
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,6 +79,7 @@ public class ResourceFruit {
     // -H "Content-Type: application/json" -X POST http://localhost:8080/fruits
     public Set<Fruit> add(@Valid Fruit fruit) {
         service.add(fruit);
+        service.addFarmer(fruit.farmer.name);
         return this.list();
     }
 
@@ -83,6 +102,16 @@ public class ResourceFruit {
         Optional<Fruit> fruit = service.getFruit(name);
         return fruit.isPresent()? 
             Response.status(Response.Status.OK).entity(fruit.get()).build() : 
+            Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("/farmer/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFarmer(@PathParam("name") String name) {
+        Optional<Farmer> farmer = service.getFarmer(name);
+        return farmer.isPresent()? 
+            Response.status(Response.Status.OK).entity(farmer.get()).build() : 
             Response.status(Response.Status.NOT_FOUND).build();
     }
 }

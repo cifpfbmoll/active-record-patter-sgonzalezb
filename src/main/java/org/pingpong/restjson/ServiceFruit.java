@@ -29,9 +29,24 @@ public class ServiceFruit {
         return memoryFruits.collect(Collectors.toSet());
     }
 
+
+    @Transactional
+    public Set<Farmer> listfarmer() {
+        
+        Stream<Farmer> memoryFarmer = Farmer.streamAll();
+        return memoryFarmer.collect(Collectors.toSet());
+    }   
+
+
     @Transactional
     public void add(Fruit fruit) {
         fruit.persist();
+    }
+
+    @Transactional
+    public void addFarmer(String name) {
+        Farmer farmer = new Farmer(name,"Paguera");
+        farmer.persist();
     }
 
     public void remove(String name) {
@@ -42,5 +57,9 @@ public class ServiceFruit {
 
     public Optional<Fruit> getFruit(String name) {
         return name.isBlank()? Optional.ofNullable(null) : Fruit.find("name", name).firstResultOptional();
+    }
+
+    public Optional<Farmer> getFarmer(String name) {
+        return name.isBlank()? Optional.ofNullable(null) : Farmer.find("name", name).firstResultOptional();
     }
 }
